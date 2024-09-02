@@ -3,6 +3,7 @@ import {BlogDbModel} from '../../types/db/blog-db.model'
 import {PostDbModel} from '../../types/db/post-db.model'
 import {SETTINGS} from "../../../settings";
 import {UserDbModel} from "../../types/db/user-db.model";
+import {CommentDbModel} from "../../types/db/comment-db.model";
 
 
 
@@ -18,6 +19,7 @@ export const postCollection: Collection<PostDbModel> = dbMongo.collection<PostDb
 
 export const userCollection: Collection<UserDbModel> = dbMongo.collection<UserDbModel>(SETTINGS.USER_COLLECTION_NAME)
 
+export const commentCollection: Collection<CommentDbModel> = dbMongo.collection<CommentDbModel>(SETTINGS.COMMENT_COLLECTION_NAME)
 // проверка подключения к бд
 export const connectToDB = async () => {
     try {
