@@ -4,7 +4,7 @@ import {WithId} from "mongodb"
 import jwt, {JwtPayload} from 'jsonwebtoken'
 
 
-export const jwtService = {
+export const jwtServices = {
     createJWT(user:WithId<UserDbModel>):string {
         return jwt.sign({userId:user._id.toString()},SETTINGS.SECRET_KEY,{expiresIn:'1h'})
     },

@@ -20,6 +20,8 @@ export const blogsServices = {
         return blogsRepository.deleteBlog(new ObjectId(id))
     },
     async updateBlog(blog: UpdateBlogInputModel, id: string) {
+        const isIdValid = ObjectId.isValid(id);
+        if (!isIdValid) return false
         return blogsRepository.updateBlog(blog,id)
     },
 }

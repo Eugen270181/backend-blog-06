@@ -22,6 +22,8 @@ export const postsServices = {
         return postsRepository.deletePost(new ObjectId(id))
     },
     async updatePost(post: UpdatePostInputModel, id: string) {
+        const isIdValid = ObjectId.isValid(id);
+        if (!isIdValid) return false
         const {title, shortDescription, content, blogId} = post
         const blog = await blogsRepository.findBlogById(post.blogId)
         if(!blog){ return false}

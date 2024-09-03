@@ -2,14 +2,14 @@ import {Router} from 'express'
 import {commentValidators} from "./middlewares/commentValidators";
 import {adminMiddleware} from "../../common/middleware/admin-middleware";
 import {getCommentsController} from "./controllers/getCommentsController";
-import {createCommentController} from "./controllers/createCommentController";
 import {delCommentController} from "./controllers/delCommentController";
+import {updateCommentController} from "./controllers/updateCommentController";
 
 
 export const commentsRouter = Router()
 
 commentsRouter.get('/', adminMiddleware, getCommentsController)
-commentsRouter.post('/', adminMiddleware,...commentValidators, createCommentController)
+commentsRouter.put('/', adminMiddleware,...commentValidators, updateCommentController)
 commentsRouter.delete('/:id', adminMiddleware, delCommentController)
 
 
