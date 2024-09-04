@@ -23,7 +23,7 @@ type Result<T> = {
     statusCode:StatusCode
 }
 
-
+//TODO:update delete with diff statuscode
 export const commentsServices = {
     async createComment(comment: CreateCommentInputModel, postId:string, user:WithId<UserDbModel>):Promise<Result<string>> {
         const {content} = comment

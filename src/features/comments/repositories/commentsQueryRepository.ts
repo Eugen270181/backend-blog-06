@@ -16,8 +16,8 @@ export const commentsQueryRepository = {
         const comment = await this.findCommentById(id)
         return comment?this.map(comment):null
     },
-    async getCommentsAndMap(query:validQueryType,postId:string):Promise<pagCommentOutputModel> {
-        const search = {postId:postId}
+    async getCommentsAndMap(query:validQueryType,postId?:string):Promise<pagCommentOutputModel> {
+        const search = postId?{postId:postId}:{}
         try {
             const comments = await commentCollection
                 .find(search)

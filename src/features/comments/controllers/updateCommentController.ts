@@ -7,6 +7,7 @@ import {CommentOutputModel} from "../types/output/comment-output.type";
 
 
 export const updateCommentController = async (req: Request<any, any, CreateCommentInputModel>, res: Response<CommentOutputModel|OutputErrorsType>) => {
+    //TODO: RELEASE OBJECT RESULT WITH RETURN AND SEND REQ.USER
     const updateCommentResult = await commentsServices.updateComment(req.body)
     if (!updateCommentResult.statusCode) {
         res.status(400).send({ errorsMessages: [ {message:'Not unique field!', field:updateCommentResult.data} ] })

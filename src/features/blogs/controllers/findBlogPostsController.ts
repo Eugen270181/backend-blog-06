@@ -1,14 +1,14 @@
 import {Request, Response} from 'express'
 import {postsQueryRepository} from "../../posts/repository/postsQueryRepository";
 import {pagPostOutputModel} from "../../posts/types/output/pag-post-output.type";
-import {blogsQueryRepository} from "../repositories/blogsQueryRepository";
 import {validQueryType} from "../../../common/types/valid-query-type";
 import {inputQuerySanitizer} from "../../../common/module/inputQuerySanitizer";
 import {anyQueryType} from "../../../common/types/any-query-type";
+import {blogsRepository} from "../repositories/blogsRepository";
 
 export const findBlogPostsController = async (req: Request<{id: string}>, res: Response<pagPostOutputModel>) => {
     const blogId = req.params.id
-    const foundBlog = await blogsQueryRepository.findBlogById(blogId)
+    const foundBlog = await blogsRepository.findBlogById(blogId)
     if (!foundBlog) {
         res.sendStatus(404)
         return
