@@ -2,26 +2,12 @@ import {usersRepository} from "../repositories/usersRepository";
 import {ObjectId} from "bson";
 import {CreateUserInputModel} from "../types/input/create-user-input.type";
 import {UserDbModel} from "../../../common/types/db/user-db.model";
-//import {OutputErrorsType} from "../../../common/types/output-errors-type";
 import {hashServices} from "../../../common/module/hashServices";
-import {userCollection} from "../../../common/module/db/dbMongo";
+import {ResultObject} from "../../../common/types/result-object-type";
 
-
-enum StatusCode {
-    NoSuccess,
-    Success
-}
-
-type Result<T> = {
-    data:T,
-    statusCode:StatusCode
-}
-//const ErrorObject = ( message: string, field: string ):OutputErrorsType => {
-//    return { errorsMessages: [ {message, field} ] }
-//}
 
 export const usersServices = {
-    async createUser(user: CreateUserInputModel): Promise<Result<string>> {
+    async createUser(user: CreateUserInputModel): Promise<ResultObject<string>> {
         const {login, password, email} = user
 
         if (await usersRepository.findUserByLogin(login)) return {data: 'login', statusCode: 0}

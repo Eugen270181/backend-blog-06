@@ -9,11 +9,11 @@ import {OutputErrorsType} from "../../../common/types/output-errors-type";
 export const createUserController = async (req: Request<any, any, CreateUserInputModel>, res: Response<UserOutputModel|OutputErrorsType>) => {
     const newUserResult = await usersServices.createUser(req.body)
     if (!newUserResult.statusCode) {
-        res.status(400).send({ errorsMessages: [ {message:'Not unique field!', field:newUserResult.data} ] })
+        res.status(400).send({ errorsMessages: [ {message:'Not unique field!', field:newUserResult.data!} ] })
         return
     }
 
-    const newUser = await usersQueryRepository.findUserAndMap(newUserResult.data)
+    const newUser = await usersQueryRepository.getMapUser(newUserResult.data!)
 
     if (!newUser) {
         console.log('юзер был создан, но не найден')

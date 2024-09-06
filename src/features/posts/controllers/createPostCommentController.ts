@@ -1,9 +1,4 @@
 import {Response, Request} from 'express'
-import {blogsQueryRepository} from "../repositories/blogsQueryRepository";
-import {CreateBlogPostInputModel} from "../../posts/types/input/create-blog-post-input.type";
-import {PostOutputModel} from "../../posts/types/output/post-output.type";
-import {postsQueryRepository} from "../../posts/repository/postsQueryRepository";
-import {postsServices} from "../../posts/services/postsServices";
 import {commentsServices} from "../../comments/services/commentsServices";
 import {postsRepository} from "../repository/postsRepository";
 import {CreateCommentInputModel} from "../../comments/types/input/create-comment-input.model";
@@ -13,7 +8,7 @@ import {commentsQueryRepository} from "../../comments/repositories/commentsQuery
 
 
 export const createPostCommentController = async (req: Request<{id:string}, any, CreateCommentInputModel>, res: Response<CommentOutputModel>) => {
-    const user = req.user!
+    const userId = req.user.userId!
     const postId = req.params.id
     const foundPost = await postsRepository.findPostById(postId)
     if (!foundPost) {
@@ -21,7 +16,8 @@ export const createPostCommentController = async (req: Request<{id:string}, any,
         return
     }
     //TODO:relase calling func createComment
-    const newCommentId = await commentsServices.createComment({...req.body},postId,user)
+    const {content} = req.body
+    const newCommentId = await commentsServices.createComment({content}, postId, userId)
     const newComment = await commentsQueryRepository.findCommentAndMap(newCommentId)
     //TODO:different response
     if (!newComment) {

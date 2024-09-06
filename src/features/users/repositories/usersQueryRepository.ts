@@ -4,19 +4,24 @@ import {validQueryType} from "../../../common/types/valid-query-type";
 import {pagUserOutputModel} from "../types/output/pag-user-output.type";
 import {UserOutputModel} from "../types/output/user-output.type";
 import {UserDbModel} from "../../../common/types/db/user-db.model";
+import {MeOutputModel} from "../../auth/types/output/me-output.model";
 
 
 export const usersQueryRepository = {
-    async findUserById(id: string) {
+    async getUserById(id: string) {
         const isIdValid = ObjectId.isValid(id);
         if (!isIdValid) return null
         return userCollection.findOne({ _id: new ObjectId(id) });
     },
-    async findUserAndMap(id: string) {
-        const user = await this.findUserById(id)
-        return user?this.map(user):null
+    async getMapUser(id: string) {
+        const user = await this.getUserById(id)
+        return user?this.mapUser(user):null
     },
-    async getUsersAndMap(query:validQueryType):Promise<pagUserOutputModel> {
+    async getMapMe(id: string) {
+        const user = await this.getUserById(id)
+        return user?this.mapMe(user):null
+    },
+    async getMapUsers(query:validQueryType):Promise<pagUserOutputModel> {
         const searchLogin = query.searchLoginTerm ? {login:{$regex:query.searchLoginTerm,$options:'i'}}:{}
         const searchEmail = query.searchEmailTerm ? {email:{$regex:query.searchEmailTerm,$options:'i'}}:{}
         const search = {$or:[searchLogin,searchEmail]}
@@ -33,7 +38,7 @@ export const usersQueryRepository = {
                 page: query.pageNumber,
                 pageSize:query.pageSize,
                 totalCount,
-                items:users.map(this.map)
+                items:users.map(this.mapUser)
             }
         }
         catch(e){
@@ -42,8 +47,12 @@ export const usersQueryRepository = {
         }
 
     },
-    map(user:WithId<UserDbModel>):UserOutputModel{
+    mapUser(user:WithId<UserDbModel>):UserOutputModel{
         const { _id, passHash,...userForOutPut} = user;//деструктуризация
         return {id:user._id.toString(),...userForOutPut}
+    },
+    mapMe(user:WithId<UserDbModel>):MeOutputModel{
+        const { _id,email, login} = user;//деструктуризация
+        return { email, login, userId:_id.toString()}
     },
 }

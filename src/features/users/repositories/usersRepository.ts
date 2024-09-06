@@ -8,12 +8,12 @@ export const usersRepository = {
         const result = await userCollection.insertOne(user)
         return result.insertedId.toString() // return _id -objectId
     },
-    async findUserById(id: string) {
+    async getUserById(id: string) {
         const isIdValid = ObjectId.isValid(id);
         if (!isIdValid) return null
         return userCollection.findOne({ _id: new ObjectId(id) });
     },
-    async findUserByCredentials(inputLogin:string):Promise<WithId<UserDbModel>|null> {
+    async getUserByCredentials(inputLogin:string):Promise<WithId<UserDbModel>|null> {
         const search = { $or: [
             { login: inputLogin },  // поля логина
             { email: inputLogin }      // или электронная почта
@@ -21,10 +21,10 @@ export const usersRepository = {
         return userCollection.findOne(search);
     },
     async findUserByLogin(login: string) {
-        return userCollection.findOne({login});
+        return !!userCollection.findOne({login});
     },
     async findUserByEmail(email: string) {
-        return userCollection.findOne({email} );
+        return !!userCollection.findOne({email} );
     },
     async deleteUser(id:ObjectId){
         const result = await userCollection.deleteOne({ _id: id });

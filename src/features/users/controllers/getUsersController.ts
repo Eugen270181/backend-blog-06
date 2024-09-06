@@ -7,7 +7,7 @@ import {pagUserOutputModel} from "../types/output/pag-user-output.type";
 
 export const getUsersController = async (req:Request, res:Response<pagUserOutputModel>) => {
     const sanitizedQuery:validQueryType = inputQuerySanitizer(req.query as anyQueryType)
-    const foundUsers = await usersQueryRepository.getUsersAndMap(sanitizedQuery)
+    const foundUsers = await usersQueryRepository.getMapUsers(sanitizedQuery)
     res.status(200).send(foundUsers)
     return
 }

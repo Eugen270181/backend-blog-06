@@ -1,25 +1,20 @@
-import {Response, Request} from 'express'
+import {Request, Response} from 'express'
 import {commentsServices} from "../services/commentsServices";
-import {commentsQueryRepository} from "../repositories/commentsQueryRepository";
 import {OutputErrorsType} from "../../../common/types/output-errors-type";
 import {CreateCommentInputModel} from "../types/input/create-comment-input.model";
 import {CommentOutputModel} from "../types/output/comment-output.type";
+import {StatusCode} from "../../../common/types/enum/result-StatusCode-type";
 
 
 export const updateCommentController = async (req: Request<any, any, CreateCommentInputModel>, res: Response<CommentOutputModel|OutputErrorsType>) => {
     //TODO: RELEASE OBJECT RESULT WITH RETURN AND SEND REQ.USER
-    const updateCommentResult = await commentsServices.updateComment(req.body)
-    if (!updateCommentResult.statusCode) {
-        res.status(400).send({ errorsMessages: [ {message:'Not unique field!', field:updateCommentResult.data} ] })
-        return
-    }
+    const userId = req.user.userId!
+    const commentId = req.params.id
+    const {content} = req.body
 
-    const updateComment = await commentsQueryRepository.findCommentAndMap(updateCommentResult.data)
+    const updateResult = await commentsServices.updateComment({content},commentId,userId)
+    if (!updateResult) return res.sendStatus(404)
+    if (updateResult===StatusCode.Forbidden) return res.sendStatus(403)
 
-    if (!updateComment) {
-        console.log('комментарий был создан, но не найден')
-        res.sendStatus(504)
-        return
-    }
-    res.status(201).send(updateComment)
+    return res.sendStatus(204)
 };

@@ -1,8 +1,6 @@
 import {Response, Request, NextFunction} from 'express'
 
-import {SETTINGS} from '../../settings'
 import {jwtServices} from "../module/jwtServices";
-import {usersServices} from "../../features/users/services/usersServices";
 import {usersRepository} from "../../features/users/repositories/usersRepository";
 
 export const authMiddleware = async (req: Request, res: Response, next: NextFunction) => {
@@ -16,9 +14,15 @@ export const authMiddleware = async (req: Request, res: Response, next: NextFunc
 
     const userId = await jwtServices.getUserIdByToken(token)
     if (userId) {
-        req.user = await usersRepository.findUserById(userId)
+        const User = await usersRepository.getUserById(userId)
+        if (!User) {
+            res.send(401)
+            return
+        }
+        req.user = {userId: User!._id.toString()}
         next()
     }
 
     res.send(401)
+    return
 }
