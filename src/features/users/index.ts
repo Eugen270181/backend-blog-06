@@ -8,7 +8,7 @@ import {delUserController} from "./controllers/delUserController";
 
 export const usersRouter = Router()
 
-usersRouter.get('/', adminMiddleware, getUsersController)
+usersRouter.get('/', getUsersController)
 usersRouter.post('/', adminMiddleware,...userValidators, createUserController)
 usersRouter.delete('/:id', adminMiddleware, delUserController)
 

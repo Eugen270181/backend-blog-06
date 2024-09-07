@@ -7,7 +7,6 @@ import {jwtServices} from "../../../common/module/jwtServices";
 
 export const loginAuthController = async (req: Request<any, any, LoginInputModel>, res: Response<LoginSuccessOutputModel>) => {
     const isLogin = await authServices.isLogin(req.body)
-
     if (!isLogin.statusCode) {
         res.sendStatus(401)
         return

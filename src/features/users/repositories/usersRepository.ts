@@ -21,10 +21,10 @@ export const usersRepository = {
         return userCollection.findOne(search);
     },
     async findUserByLogin(login: string) {
-        return !!userCollection.findOne({login});
+        return userCollection.findOne({login})
     },
     async findUserByEmail(email: string) {
-        return !!userCollection.findOne({email} );
+        return userCollection.findOne({email} )
     },
     async deleteUser(id:ObjectId){
         const result = await userCollection.deleteOne({ _id: id });

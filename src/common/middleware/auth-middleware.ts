@@ -6,7 +6,7 @@ import {usersRepository} from "../../features/users/repositories/usersRepository
 export const authMiddleware = async (req: Request, res: Response, next: NextFunction) => {
     //debugger;
     if(!req.headers.authorization){
-        res.send(401)
+        res.sendStatus(401)
         return
     }
 
@@ -16,13 +16,13 @@ export const authMiddleware = async (req: Request, res: Response, next: NextFunc
     if (userId) {
         const User = await usersRepository.getUserById(userId)
         if (!User) {
-            res.send(401)
+            res.sendStatus(401)
             return
         }
         req.user = {userId: User!._id.toString()}
         next()
     }
 
-    res.send(401)
+    res.sendStatus(401)
     return
 }
