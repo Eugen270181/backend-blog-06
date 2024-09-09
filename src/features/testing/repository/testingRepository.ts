@@ -8,7 +8,7 @@ export const testingRepository = {
             await postCollection.drop()
             await userCollection.drop()
             await commentCollection.drop()
-            console.log('drop blog and post collections')
+            console.log('drop all collections')
             return true
         } catch (e) {
             console.log(e)

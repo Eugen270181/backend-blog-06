@@ -9,7 +9,7 @@ export const jwtServices = {
     },
     async getUserIdByToken(token:string){
         try {
-            const result = jwt.verify(token, SETTINGS.SECRET_KEY) as JwtPayload
+            const result = await jwt.verify(token, SETTINGS.SECRET_KEY) as JwtPayload
             return result.userId
         }
         catch (e) {

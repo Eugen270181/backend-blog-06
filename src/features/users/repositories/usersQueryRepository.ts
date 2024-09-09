@@ -19,7 +19,8 @@ export const usersQueryRepository = {
     },
     async getMapMe(id: string) {
         const user = await this.getUserById(id)
-        return user?this.mapMe(user):null
+        if (!user) return null
+        return this.mapMe(user)
     },
     async getMapUsers(query:validQueryType):Promise<pagUserOutputModel> {
         const searchLogin = query.searchLoginTerm ? {login:{$regex:query.searchLoginTerm,$options:'i'}}:{}
